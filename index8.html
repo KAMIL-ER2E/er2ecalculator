@@ -1,0 +1,272 @@
+import { useState, useMemo } from "react";
+
+const G = "#0a5c2e";
+const GL = "#e8f5ee";
+const GD = "#073d1e";
+
+const TREATMENT_COSTS = { "Secured Landfill": 80, "Solidification": 360, "Pyrolysis": 580 };
+
+const TRANSPORT = [
+  ["Pasir Gudang",750],["Kota Tinggi",780],["Johor Bahru",900],["Senai",1130],["Gelang Patah",1130],
+  ["Pontian",1380],["Kluang",1530],["Batu Pahat",1780],["Segamat",2100],["Muar",2100],["Melaka",2100],
+  ["Negeri Sembilan",2350],["Pahang",2450],["Terengganu",2850],["Selangor, Klang",2894],
+  ["Selangor, Rawang",2935],["Perak, Tg.Malim",3170],["Perak, Taiping",4400],["Penang",4980],
+  ["Kedah, Kulim",5000],["Kedah, Alor Setar",5400],["Kelantan, KB",5450]
+];
+
+const COMPAT = {
+  Pyrolysis: {
+    "Group 1 (315/mo)": ["SW303","SW305","SW306","SW307","SW308","SW309","SW310","SW311","SW312","SW313","SW314","SW321","SW325","SW327"],
+    "Group 2 (135/mo)": ["SW408","SW409","SW410","SW422"],
+    "Group 3 (180/mo)": ["SW501"],
+  },
+  Solidification: {
+    "Group 1 (110/mo)":  ["SW101","SW104","SW105","SW107","SW108","SW109"],
+    "Group 2 (1120/mo)": ["SW201","SW202","SW203","SW204","SW206","SW207"],
+    "Group 3 (25/mo)":   ["SW303","SW304","SW307","SW308","SW309","SW310","SW311","SW313","SW314","SW315","SW316","SW318","SW320","SW321","SW322","SW323","SW324","SW325","SW327"],
+    "Group 4 (50/mo)":   ["SW403","SW405","SW406","SW408","SW409","SW410","SW411","SW416","SW417","SW418","SW420","SW421","SW422","SW423","SW425","SW426","SW427","SW428"],
+    "Group 5 (15/mo)":   ["SW501"],
+  },
+  "Secured Landfill": {
+    "Lump Sum (6000/mo)": ["SW104","SW105","SW107","SW108","SW201","SW202","SW203","SW204","SW206","SW207","SW301","SW302","SW304","SW308","SW310","SW311","SW313","SW315","SW316","SW321","SW325","SW402","SW405","SW406","SW408","SW409","SW410","SW411","SW416","SW417","SW418","SW421","SW422","SW424","SW425","SW426","SW427","SW428","SW429","SW430","SW501"],
+  },
+};
+
+const ALL_CODES = [...new Set(Object.values(COMPAT).flatMap(g => Object.values(g).flat()))].sort();
+
+function getCompatibleTreatments(code) {
+  if (!code) return [];
+  return Object.keys(COMPAT).filter(t =>
+    Object.values(COMPAT[t]).some(arr => arr.includes(code))
+  );
+}
+
+const fmt = (n) => "RM " + Number(n).toLocaleString("en-MY", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+export default function App() {
+  const [tab, setTab] = useState("calc");
+  const [client, setClient] = useState("");
+  const [codeInput, setCodeInput] = useState("");
+  const [codeSearch, setCodeSearch] = useState("");
+  const [showDrop, setShowDrop] = useState(false);
+  const [tonnage, setTonnage] = useState("");
+  const [price, setPrice] = useState("");
+  const [transport, setTransport] = useState("");
+  const [treatment, setTreatment] = useState("");
+  const [result, setResult] = useState(null);
+
+  const filteredCodes = useMemo(() =>
+    codeSearch ? ALL_CODES.filter(c => c.toLowerCase().includes(codeSearch.toLowerCase())) : ALL_CODES,
+    [codeSearch]
+  );
+
+  const compatible = useMemo(() => getCompatibleTreatments(codeInput), [codeInput]);
+
+  function handleCodeSelect(c) {
+    setCodeInput(c);
+    setCodeSearch(c);
+    setShowDrop(false);
+    setTreatment("");
+    setResult(null);
+  }
+
+  function calculate() {
+    const t = parseFloat(tonnage), p = parseFloat(price);
+    const tc = TREATMENT_COSTS[treatment];
+    const tr = TRANSPORT.find(([loc]) => loc === transport);
+    if (!t || !p || !tc || !tr) return;
+    const revenue = p * t;
+    const cost = tc * t + tr[1];
+    const profit = revenue - cost;
+    const margin = (profit / revenue) * 100;
+    setResult({ revenue, cost, profit, margin });
+  }
+
+  const s = {
+    wrap: { fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif", minHeight: "100vh", background: "#f8faf8" },
+    nav: { background: GD, padding: "0 24px", display: "flex", alignItems: "center", gap: 0 },
+    logo: { color: "#fff", fontWeight: 500, fontSize: 15, marginRight: 32, letterSpacing: 0.3, display: "flex", alignItems: "center", gap: 10 },
+    logoBox: { background: G, border: "2px solid #2d9e5f", borderRadius: 6, width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center" },
+    navBtn: (active) => ({ background: "none", border: "none", color: active ? "#fff" : "rgba(255,255,255,0.55)", padding: "16px 20px", cursor: "pointer", fontSize: 13, fontWeight: active ? 500 : 400, borderBottom: active ? "2px solid #2d9e5f" : "2px solid transparent", transition: "all 0.15s" }),
+    body: { padding: "28px 24px", maxWidth: 860, margin: "0 auto" },
+    card: { background: "#fff", border: "0.5px solid #d4e8da", borderRadius: 12, padding: "22px 24px", marginBottom: 20 },
+    label: { display: "block", fontSize: 12, fontWeight: 500, color: "#4a7a5a", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 7 },
+    input: { width: "100%", padding: "10px 13px", border: "1px solid #cce0d4", borderRadius: 8, fontSize: 14, outline: "none", background: "#fff", boxSizing: "border-box" },
+    select: { width: "100%", padding: "10px 13px", border: "1px solid #cce0d4", borderRadius: 8, fontSize: 14, outline: "none", background: "#fff", boxSizing: "border-box" },
+    grid2: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 },
+    grid3: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 },
+    btn: { background: G, color: "#fff", border: "none", borderRadius: 9, padding: "12px 28px", fontSize: 14, fontWeight: 500, cursor: "pointer", marginTop: 8 },
+    tag: (ok) => ({ display: "inline-block", padding: "4px 12px", borderRadius: 20, fontSize: 12, fontWeight: 500, background: ok ? GL : "#f0f0f0", color: ok ? G : "#888", border: `1px solid ${ok ? "#9fd4b0" : "#ddd"}`, marginRight: 8, marginBottom: 6, cursor: "pointer" }),
+    resultBox: (good) => ({ background: good ? GL : "#f8f8f8", border: `1.5px solid ${good ? "#7ccc9e" : "#e0e0e0"}`, borderRadius: 10, padding: "20px 24px", marginTop: 20 }),
+    metricRow: { display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 16 },
+    metric: (good) => ({ background: "#fff", border: `1px solid ${good ? "#9fd4b0" : "#e8e8e8"}`, borderRadius: 8, padding: "14px 12px", textAlign: "center" }),
+    mVal: (good) => ({ fontSize: 18, fontWeight: 500, color: good ? G : "#222", marginBottom: 3 }),
+    mLbl: { fontSize: 11, color: "#888", textTransform: "uppercase", letterSpacing: 0.4 },
+    verdict: (good) => ({ display: "flex", alignItems: "center", gap: 8, padding: "10px 16px", background: good ? G : "#555", borderRadius: 8, color: "#fff", fontSize: 14, fontWeight: 500 }),
+    sectionTitle: { fontSize: 15, fontWeight: 500, color: GD, marginBottom: 14, marginTop: 4 },
+    refTable: { width: "100%", borderCollapse: "collapse", fontSize: 13 },
+    th: { padding: "10px 14px", textAlign: "left", background: GD, color: "#fff", fontSize: 12, fontWeight: 500, letterSpacing: 0.3 },
+    td: { padding: "8px 14px", borderBottom: "0.5px solid #e0ece4", verticalAlign: "top" },
+    groupBadge: { display: "inline-block", background: GL, color: G, border: "1px solid #9fd4b0", borderRadius: 20, padding: "2px 10px", fontSize: 11, fontWeight: 500, marginBottom: 4 },
+  };
+
+  return (
+    <div style={s.wrap}>
+      <h2 className="sr-only" style={{position:"absolute",width:1,height:1,overflow:"hidden"}}>ER2E Waste Profitability and Quota Manager — Calculator and Reference tool</h2>
+      <nav style={s.nav}>
+        <div style={s.logo}>
+          <div style={s.logoBox}>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 14V6l6-4 6 4v8H2z" stroke="#7ccc9e" strokeWidth="1.5" fill="none"/><rect x="5.5" y="9" width="2" height="5" rx="0.5" fill="#7ccc9e"/><rect x="8.5" y="9" width="2" height="5" rx="0.5" fill="#7ccc9e"/></svg>
+          </div>
+          ER2E / Meridian
+        </div>
+        <button style={s.navBtn(tab==="calc")} onClick={()=>setTab("calc")}>Margin Calculator</button>
+        <button style={s.navBtn(tab==="ref")}  onClick={()=>setTab("ref")}>Quota Reference</button>
+      </nav>
+
+      {tab === "calc" && (
+        <div style={s.body}>
+          <div style={{...s.card}}>
+            <div style={s.sectionTitle}>Client & Waste Details</div>
+            <div style={{...s.grid2, marginBottom: 16}}>
+              <div>
+                <label style={s.label}>Client Name</label>
+                <input style={s.input} placeholder="Enter client name" value={client} onChange={e=>setClient(e.target.value)}/>
+              </div>
+              <div style={{position:"relative"}}>
+                <label style={s.label}>Waste Code</label>
+                <input
+                  style={s.input}
+                  placeholder="Search (e.g. SW303)"
+                  value={codeSearch}
+                  onChange={e=>{setCodeSearch(e.target.value);setShowDrop(true);setCodeInput("");setTreatment("");setResult(null);}}
+                  onFocus={()=>setShowDrop(true)}
+                  onBlur={()=>setTimeout(()=>setShowDrop(false),150)}
+                  autoComplete="off"
+                />
+                {showDrop && filteredCodes.length > 0 && (
+                  <div style={{position:"absolute",top:"100%",left:0,right:0,background:"#fff",border:"1px solid #cce0d4",borderRadius:8,zIndex:99,maxHeight:200,overflowY:"auto",boxShadow:"0 4px 16px rgba(0,80,30,0.1)"}}>
+                    {filteredCodes.map(c=>(
+                      <div key={c} onMouseDown={()=>handleCodeSelect(c)}
+                        style={{padding:"9px 14px",cursor:"pointer",fontSize:13,borderBottom:"0.5px solid #f0f0f0",fontFamily:"monospace"}}
+                        onMouseEnter={e=>e.target.style.background=GL}
+                        onMouseLeave={e=>e.target.style.background="#fff"}
+                      >{c}</div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {codeInput && (
+              <div style={{marginBottom:16}}>
+                <label style={s.label}>Compatible Treatment Methods</label>
+                <div>
+                  {["Pyrolysis","Solidification","Secured Landfill"].map(t=>{
+                    const ok = compatible.includes(t);
+                    return (
+                      <span key={t} style={{...s.tag(ok && treatment===t), opacity: ok ? 1 : 0.4, cursor: ok ? "pointer" : "not-allowed"}}
+                        onClick={()=>{ if(ok){ setTreatment(t); setResult(null); } }}>
+                        {t} {ok && treatment===t ? "✓" : ""}
+                      </span>
+                    );
+                  })}
+                </div>
+                {compatible.length === 0 && <div style={{fontSize:13,color:"#c0392b",marginTop:4}}>No compatible treatment found for {codeInput}.</div>}
+              </div>
+            )}
+
+            <div style={{...s.grid3}}>
+              <div>
+                <label style={s.label}>Tonnage (tonnes)</label>
+                <input style={s.input} type="number" min="0" placeholder="0.00" value={tonnage} onChange={e=>{setTonnage(e.target.value);setResult(null);}}/>
+              </div>
+              <div>
+                <label style={s.label}>Price per Tonne (RM)</label>
+                <input style={s.input} type="number" min="0" placeholder="0.00" value={price} onChange={e=>{setPrice(e.target.value);setResult(null);}}/>
+              </div>
+              <div>
+                <label style={s.label}>Transport Location</label>
+                <select style={s.select} value={transport} onChange={e=>{setTransport(e.target.value);setResult(null);}}>
+                  <option value="">Select location</option>
+                  {TRANSPORT.map(([loc,cost])=><option key={loc} value={loc}>{loc} — RM {cost.toLocaleString()}</option>)}
+                </select>
+              </div>
+            </div>
+
+            <button style={s.btn} onClick={calculate}>Calculate Margin</button>
+          </div>
+
+          {result && (
+            <div style={s.resultBox(result.margin > 25)}>
+              <div style={{...s.verdict(result.margin > 25), marginBottom: 16}}>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  {result.margin > 25
+                    ? <path d="M3 8l3.5 3.5L13 5" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
+                    : <path d="M4 8h8" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>}
+                </svg>
+                {result.margin > 25 ? `Profitable — Margin above 25% threshold` : `Margin below 25% threshold`}
+                {client ? ` — ${client}` : ""}
+              </div>
+              <div style={s.metricRow}>
+                {[
+                  ["Total Revenue", fmt(result.revenue), result.margin>25],
+                  ["Total Cost", fmt(result.cost), false],
+                  ["Profit", fmt(result.profit), result.margin>25],
+                  ["Margin %", result.margin.toFixed(1) + "%", result.margin>25],
+                ].map(([lbl,val,good])=>(
+                  <div key={lbl} style={s.metric(good && result.margin>25)}>
+                    <div style={s.mVal(good && result.margin>25)}>{val}</div>
+                    <div style={s.mLbl}>{lbl}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{fontSize:12,color:"#666",borderTop:"0.5px solid #d4e8da",paddingTop:12,marginTop:4}}>
+                Treatment: <b style={{color:GD}}>{treatment}</b> @ RM {TREATMENT_COSTS[treatment]}/t &nbsp;·&nbsp;
+                Waste: <b style={{color:GD}}>{codeInput}</b> &nbsp;·&nbsp;
+                Transport: <b style={{color:GD}}>{transport}</b>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {tab === "ref" && (
+        <div style={s.body}>
+          {Object.entries(COMPAT).map(([treatment, groups])=>(
+            <div key={treatment} style={{...s.card, marginBottom: 24}}>
+              <div style={{...s.sectionTitle, display:"flex", alignItems:"center", gap:10}}>
+                <span style={{background: treatment==="Pyrolysis"?"#fff3e0":treatment==="Solidification"?"#e8f0ff":"#e8f5ee", color: treatment==="Pyrolysis"?"#b8600a":treatment==="Solidification"?"#1a3a8b":G, border:`1px solid ${treatment==="Pyrolysis"?"#f5c88a":treatment==="Solidification"?"#b3c8f5":"#9fd4b0"}`, borderRadius:6, padding:"3px 12px", fontSize:13, fontWeight:500}}>
+                  {treatment}
+                </span>
+                <span style={{fontSize:13,color:"#888",fontWeight:400}}>RM {TREATMENT_COSTS[treatment].toLocaleString()}/tonne treatment cost</span>
+              </div>
+              <table style={s.refTable}>
+                <thead>
+                  <tr>
+                    <th style={{...s.th, borderRadius:"8px 0 0 0", width:"22%"}}>Group / Quota</th>
+                    <th style={{...s.th, borderRadius:"0 8px 0 0"}}>SW Codes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(groups).map(([grp, codes], i)=>(
+                    <tr key={grp} style={{background: i%2===0?"#fff":"#fafcfa"}}>
+                      <td style={s.td}><span style={s.groupBadge}>{grp}</span></td>
+                      <td style={s.td}>
+                        <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+                          {codes.map(c=>(
+                            <span key={c} style={{fontFamily:"monospace",fontSize:12,background:"#f4f4f4",padding:"2px 8px",borderRadius:4,color:"#333"}}>{c}</span>
+                          ))}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
