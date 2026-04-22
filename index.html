@@ -36,12 +36,10 @@ input:focus,select:focus{border-color:#0a5c2e}
 .tag.ok{background:#e8f5ee;color:#0a5c2e;border-color:#9fd4b0;opacity:1}
 .tag.ok.selected{background:#0a5c2e;color:#fff;border-color:#0a5c2e}
 .tag.disabled{cursor:not-allowed}
-/* Dropdown */
 #code-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #cce0d4;border-radius:8px;z-index:99;max-height:200px;overflow-y:auto;box-shadow:0 4px 16px rgba(0,80,30,.1);display:none}
 #code-dropdown.open{display:block}
 .drop-item{padding:9px 14px;cursor:pointer;font-size:13px;border-bottom:.5px solid #f0f0f0;font-family:monospace}
 .drop-item:hover{background:#e8f5ee}
-/* Result */
 .result-box{border-radius:10px;padding:20px 24px;margin-top:20px}
 .result-box.good{background:#e8f5ee;border:1.5px solid #7ccc9e}
 .result-box.neutral{background:#f8f8f8;border:1.5px solid #e0e0e0}
@@ -58,7 +56,6 @@ input:focus,select:focus{border-color:#0a5c2e}
 .info-box.blue{background:#f0f7ff;border:1px solid #c8daf5;color:#1a3a6b}
 .info-box.yellow{background:#fff8e6;border:1px solid #f5c88a;color:#8b6914}
 .info-box.breakdown{background:#f8faf8;border:1px solid #e0ece4}
-/* Ref table */
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{padding:10px 14px;text-align:left;background:#073d1e;color:#fff;font-size:12px;font-weight:500;letter-spacing:.3px}
 td{padding:8px 14px;border-bottom:.5px solid #e0ece4;vertical-align:top}
@@ -66,22 +63,19 @@ tr:nth-child(even){background:#fafcfa}
 .group-badge{display:inline-block;background:#e8f5ee;color:#0a5c2e;border:1px solid #9fd4b0;border-radius:20px;padding:2px 10px;font-size:11px;font-weight:500;margin-bottom:4px}
 .sw-chip{font-family:monospace;font-size:14px;background:#f4f4f4;color:#333;padding:6px 12px;border-radius:6px;cursor:pointer;transition:all .15s;display:inline-block}
 .sw-chip:hover,.sw-chip.active{background:#0a5c2e;color:#fff}
-/* Quote & Compare cards */
 .quote-card{border-radius:10px;padding:16px;margin-bottom:12px}
 .quote-card.profit{background:#f0fdf4;border:1px solid #bbf7d0}
 .quote-card.loss{background:#fef2f2;border:1px solid #fecaca}
 .quote-card.warn{background:#fffbeb;border:1px solid #fde68a}
 .status-pill{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;color:#fff}
 .compare-col{border-radius:8px;padding:16px}
-/* Breakeven */
 .bk-card{background:#f8f8f8;border:1px solid #e8e8e8;border-radius:8px;padding:14px;text-align:center}
 .bk-card.highlight{background:#e8f5ee;border-color:#9fd4b0}
-/* Settings */
 .edit-span{cursor:pointer;padding:4px 8px;border-radius:4px;background:#f4f4f4;font-size:13px}
-/* Section sep */
 .section-sep{font-size:18px;font-weight:500;color:#073d1e;margin-bottom:20px;margin-top:24px}
-/* Tanpa/Dengan boxes */
 .sub-box{border-radius:8px;padding:14px 16px;margin-bottom:16px}
+/* Base price indicator */
+.base-warn{background:#fef3c7;border:1px solid #f59e0b;border-radius:8px;padding:10px 14px;font-size:12px;color:#92400e;margin-top:8px}
 @media(max-width:600px){
   .grid2,.grid3,.grid4{grid-template-columns:1fr 1fr}
   .grid3{grid-template-columns:1fr}
@@ -92,14 +86,10 @@ tr:nth-child(even){background:#fafcfa}
 </style>
 </head>
 <body>
-
 <div id="toast"></div>
-
 <nav>
   <div class="logo">
-    <div class="logo-box">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 14V6l6-4 6 4v8H2z" stroke="#7ccc9e" stroke-width="1.5" fill="none"/><rect x="5.5" y="9" width="2" height="5" rx=".5" fill="#7ccc9e"/><rect x="8.5" y="9" width="2" height="5" rx=".5" fill="#7ccc9e"/></svg>
-    </div>
+    <div class="logo-box"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 14V6l6-4 6 4v8H2z" stroke="#7ccc9e" stroke-width="1.5" fill="none"/><rect x="5.5" y="9" width="2" height="5" rx=".5" fill="#7ccc9e"/><rect x="8.5" y="9" width="2" height="5" rx=".5" fill="#7ccc9e"/></svg></div>
     ER2E
   </div>
   <button class="nav-btn active" onclick="switchTab('calc')">Calculator</button>
@@ -125,13 +115,11 @@ tr:nth-child(even){background:#fafcfa}
         <div id="code-dropdown"></div>
       </div>
     </div>
-
     <div id="treatment-row" style="margin-bottom:16px;display:none">
       <label class="lbl">Compatible Treatment Methods</label>
       <div id="treatment-tags"></div>
       <div id="no-treatment" style="font-size:13px;color:#c0392b;display:none"></div>
     </div>
-
     <div class="grid3">
       <div>
         <label class="lbl">Tonnage (tonnes)</label>
@@ -148,7 +136,6 @@ tr:nth-child(even){background:#fafcfa}
         </select>
       </div>
     </div>
-
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
       <button class="btn" onclick="calculate()">Calculate Margin</button>
       <button class="btn-outline" id="btn-add-quote" style="display:none" onclick="addToQuote()">Add to Quote</button>
@@ -157,16 +144,13 @@ tr:nth-child(even){background:#fafcfa}
     </div>
   </div>
 
-  <!-- Breakeven -->
   <div class="card" id="breakeven-card" style="display:none">
-    <div class="section-title">Price Suggestions (Breakeven Calculator)</div>
+    <div class="section-title">Price Suggestions <span style="font-size:12px;color:#888;font-weight:400">(Breakeven — 60% margin threshold)</span></div>
     <div class="grid3" id="breakeven-grid"></div>
+    <div id="base-price-warn" class="base-warn" style="display:none"></div>
   </div>
 
-  <!-- Result -->
   <div id="result-box" style="display:none"></div>
-
-  <!-- Reference -->
   <div class="section-sep">Quota Reference</div>
   <div id="ref-section"></div>
 </div>
@@ -176,7 +160,7 @@ tr:nth-child(even){background:#fafcfa}
   <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
       <div class="section-title" style="margin:0">Multi-Item Quotation</div>
-      <div style="display:flex;gap:8px" id="quote-actions" style="display:none">
+      <div style="display:flex;gap:8px" id="quote-actions">
         <button class="btn-sm" onclick="copyQuote()">Copy to Clipboard</button>
         <button class="btn-danger" onclick="clearQuote()">Clear All</button>
       </div>
@@ -227,12 +211,26 @@ tr:nth-child(even){background:#fafcfa}
       <thead><tr><th style="border-radius:8px 0 0 0">Location</th><th style="border-radius:0 8px 0 0">Minimum Invoice (RM)</th></tr></thead>
       <tbody id="min-invoice-tbody"></tbody>
     </table>
-
     <div style="margin-top:24px">
       <div class="section-title">Treatment Costs (RM/tonne)</div>
+      <p style="font-size:13px;color:#666;margin-bottom:12px">Click to edit. Used in margin calculation.</p>
       <div class="grid3" id="treatment-cost-cards"></div>
     </div>
-
+    <div style="margin-top:24px">
+      <div class="section-title">Base Price (RM/tonne)</div>
+      <p style="font-size:13px;color:#666;margin-bottom:12px">Minimum acceptable price. Shown as warning in price suggestions.</p>
+      <div class="grid3" id="base-price-cards"></div>
+    </div>
+    <div style="margin-top:24px">
+      <div class="section-title">Margin Threshold</div>
+      <p style="font-size:13px;color:#666;margin-bottom:12px">Target margin % for profitable verdict and price suggestions.</p>
+      <div style="display:flex;align-items:center;gap:12px">
+        <input type="number" id="margin-threshold-input" min="1" max="99" style="max-width:100px" value="60">
+        <span style="font-size:14px;color:#555">%</span>
+        <button class="btn-sm" onclick="saveMarginThreshold()">Save</button>
+        <span style="font-size:13px;color:#888">Current: <strong id="current-threshold-display">60%</strong></span>
+      </div>
+    </div>
     <div style="margin-top:24px">
       <button class="btn-danger" onclick="resetSettings()">Reset All to Default</button>
     </div>
@@ -242,6 +240,8 @@ tr:nth-child(even){background:#fafcfa}
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────────
 const DEFAULT_TREATMENT_COSTS = {"Secured Landfill":82,"Solidification":357.71,"Pyrolysis":443.47};
+const DEFAULT_BASE_PRICE = {"Secured Landfill":400,"Solidification":800,"Pyrolysis":1250};
+const DEFAULT_MARGIN_THRESHOLD = 60;
 const LORRY_CAPACITY = 20;
 const DEFAULT_MIN_INVOICE = {"Pasir Gudang":2500,"Kota Tinggi":2500,"Johor Bahru":3000,"Senai":3000,"Gelang Patah":3000,"Pontian":3200,"Kluang":3500,"Batu Pahat":3500,"Segamat":3500,"Muar":3500,"Melaka":4000,"Negeri Sembilan":4000,"Pahang":8000,"Terengganu":10000,"Selangor, Klang":8000,"Selangor, Rawang":8000,"Perak, Tg.Malim":9000,"Perak, Taiping":9000,"Penang":8000,"Kedah, Kulim":10000,"Kedah, Alor Setar":10000,"Kelantan, KB":10000};
 const TRANSPORT = [["Pasir Gudang",750],["Kota Tinggi",780],["Johor Bahru",900],["Senai",1130],["Gelang Patah",1130],["Pontian",1380],["Kluang",1530],["Batu Pahat",1780],["Segamat",2100],["Muar",2100],["Melaka",2100],["Negeri Sembilan",2350],["Pahang",2450],["Terengganu",2850],["Selangor, Klang",2894],["Selangor, Rawang",2935],["Perak, Tg.Malim",3170],["Perak, Taiping",4400],["Penang",4980],["Kedah, Kulim",5000],["Kedah, Alor Setar",5400],["Kelantan, KB",5450]];
@@ -254,22 +254,23 @@ const ALL_CODES = [...new Set(Object.values(COMPAT).flatMap(g=>Object.values(g).
 
 // ── STATE ─────────────────────────────────────────────────────────────────
 let treatmentCosts = {...DEFAULT_TREATMENT_COSTS};
+let basePrices = {...DEFAULT_BASE_PRICE};
 let minInvoice = {...DEFAULT_MIN_INVOICE};
+let marginThreshold = DEFAULT_MARGIN_THRESHOLD;
 let codeInput = "";
 let selectedTreatment = "";
 let currentResult = null;
 let quoteItems = [];
 let compareItems = [];
 let history = [];
-let editingLoc = null;
 
 // ── INIT ──────────────────────────────────────────────────────────────────
 function init() {
-  const sh = localStorage.getItem("er2e_history");
-  if (sh) history = JSON.parse(sh);
-  const sm = localStorage.getItem("er2e_min_invoice");
-  if (sm) minInvoice = JSON.parse(sm);
-  // Populate transport dropdown
+  const sh = localStorage.getItem("er2e_history"); if (sh) history = JSON.parse(sh);
+  const sm = localStorage.getItem("er2e_min_invoice"); if (sm) minInvoice = JSON.parse(sm);
+  const sb = localStorage.getItem("er2e_base_price"); if (sb) basePrices = JSON.parse(sb);
+  const st = localStorage.getItem("er2e_margin_threshold"); if (st) marginThreshold = parseFloat(st);
+  const stc = localStorage.getItem("er2e_treatment_costs"); if (stc) treatmentCosts = JSON.parse(stc);
   const sel = document.getElementById("transport");
   TRANSPORT.forEach(([loc,cost]) => {
     const o = document.createElement("option");
@@ -295,8 +296,7 @@ function switchTab(tab) {
   ["calc","quote","compare","history","settings"].forEach(t => {
     document.getElementById("tab-"+t).style.display = t===tab ? "block" : "none";
     document.querySelectorAll(".nav-btn").forEach((b,i) => {
-      const tabs = ["calc","quote","compare","history","settings"];
-      b.classList.toggle("active", tabs[i]===tab);
+      b.classList.toggle("active", ["calc","quote","compare","history","settings"][i]===tab);
     });
   });
   if (tab==="history") renderHistory();
@@ -307,117 +307,103 @@ function switchTab(tab) {
 
 // ── CODE SEARCH ───────────────────────────────────────────────────────────
 function onCodeSearch() {
-  const q = document.getElementById("codeSearch").value;
-  codeInput = "";
-  selectedTreatment = "";
-  currentResult = null;
+  codeInput=""; selectedTreatment=""; currentResult=null;
   hideResultBtns();
-  document.getElementById("treatment-row").style.display = "none";
-  renderDropdown(q);
+  document.getElementById("treatment-row").style.display="none";
+  renderDropdown(document.getElementById("codeSearch").value);
 }
-
 function renderDropdown(q) {
   const drop = document.getElementById("code-dropdown");
-  const filtered = q ? ALL_CODES.filter(c => c.toLowerCase().includes(q.toLowerCase())) : ALL_CODES;
-  drop.innerHTML = filtered.map(c => `<div class="drop-item" onmousedown="selectCode('${c}')">${c}</div>`).join("");
+  const filtered = q ? ALL_CODES.filter(c=>c.toLowerCase().includes(q.toLowerCase())) : ALL_CODES;
+  drop.innerHTML = filtered.map(c=>`<div class="drop-item" onmousedown="selectCode('${c}')">${c}</div>`).join("");
   drop.classList.add("open");
 }
-
 function openDrop() { renderDropdown(document.getElementById("codeSearch").value); }
 function closeDrop() { document.getElementById("code-dropdown").classList.remove("open"); }
-
 function selectCode(c) {
-  codeInput = c;
-  document.getElementById("codeSearch").value = c;
-  closeDrop();
-  selectedTreatment = "";
-  currentResult = null;
-  hideResultBtns();
+  codeInput=c; document.getElementById("codeSearch").value=c;
+  closeDrop(); selectedTreatment=""; currentResult=null; hideResultBtns();
   showTreatmentTags();
 }
-
 function showTreatmentTags() {
-  const compatible = Object.keys(COMPAT).filter(t => Object.values(COMPAT[t]).some(arr => arr.includes(codeInput)));
-  const row = document.getElementById("treatment-row");
-  const tags = document.getElementById("treatment-tags");
+  const compatible = Object.keys(COMPAT).filter(t=>Object.values(COMPAT[t]).some(arr=>arr.includes(codeInput)));
+  document.getElementById("treatment-row").style.display="";
   const noT = document.getElementById("no-treatment");
-  row.style.display = "";
-  if (!compatible.length) { tags.innerHTML=""; noT.style.display=""; noT.textContent=`No compatible treatment for ${codeInput}`; return; }
-  noT.style.display = "none";
-  tags.innerHTML = ["Pyrolysis","Solidification","Secured Landfill"].map(t => {
-    const ok = compatible.includes(t);
+  if (!compatible.length) { document.getElementById("treatment-tags").innerHTML=""; noT.style.display=""; noT.textContent=`No compatible treatment for ${codeInput}`; return; }
+  noT.style.display="none";
+  document.getElementById("treatment-tags").innerHTML = ["Pyrolysis","Solidification","Secured Landfill"].map(t=>{
+    const ok=compatible.includes(t);
     return `<span class="tag ${ok?"ok":""} ${!ok?"disabled":""}" onclick="${ok?`selectTreatment('${t}')`:''}"> ${t}</span>`;
   }).join("");
 }
-
 function selectTreatment(t) {
-  selectedTreatment = t;
-  document.querySelectorAll(".tag.ok").forEach(el => {
-    el.classList.toggle("selected", el.textContent.trim() === t);
-  });
-  currentResult = null;
-  hideResultBtns();
+  selectedTreatment=t;
+  document.querySelectorAll(".tag.ok").forEach(el=>el.classList.toggle("selected",el.textContent.trim()===t));
+  currentResult=null; hideResultBtns();
 }
 
 // ── CALCULATE ─────────────────────────────────────────────────────────────
-function fmt(n) { return "RM " + Number(n).toLocaleString("en-MY",{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmt(n) { return "RM "+Number(n).toLocaleString("en-MY",{minimumFractionDigits:2,maximumFractionDigits:2}); }
 
-function calculateResult(t, p, treat, loc) {
-  const tc = treatmentCosts[treat];
-  const tr = TRANSPORT.find(([l]) => l===loc);
-  if (!t||!p||!tc||!tr) return null;
-  const trips = Math.ceil(t/LORRY_CAPACITY);
-  const transportCost = trips * tr[1];
-  const treatmentCost = tc * t;
-  const totalCost = treatmentCost + transportCost;
-  const revenueBeforeMin = p * t;
-  const minInv = minInvoice[loc];
-  const minInvoiceApplied = revenueBeforeMin < minInv;
-  const revenue = Math.max(revenueBeforeMin, minInv);
-  const profit = revenue - totalCost;
-  const margin = (profit/revenue)*100;
+function calculateResult(t,p,treat,loc) {
+  const tc=treatmentCosts[treat];
+  const tr=TRANSPORT.find(([l])=>l===loc);
+  if(!t||!p||!tc||!tr) return null;
+  const trips=Math.ceil(t/LORRY_CAPACITY);
+  const transportCost=trips*tr[1];
+  const treatmentCost=tc*t;
+  const totalCost=treatmentCost+transportCost;
+  const revenueBeforeMin=p*t;
+  const minInv=minInvoice[loc];
+  const minInvoiceApplied=revenueBeforeMin<minInv;
+  const revenue=Math.max(revenueBeforeMin,minInv);
+  const profit=revenue-totalCost;
+  const margin=(profit/revenue)*100;
   return {revenue,revenueBeforeMin,minInvoiceApplied,treatmentCost,transportCost,totalCost,trips,profit,margin};
 }
 
 function calculate() {
-  const t = parseFloat(document.getElementById("tonnage").value);
-  const p = parseFloat(document.getElementById("price").value);
-  const loc = document.getElementById("transport").value;
-  if (!codeInput) { toast("Please select a waste code","info"); return; }
-  if (!selectedTreatment) { toast("Please select a treatment method","info"); return; }
-  if (!t||!p||!loc) { toast("Please fill all fields","info"); return; }
-  currentResult = calculateResult(t, p, selectedTreatment, loc);
-  if (!currentResult) return;
+  const t=parseFloat(document.getElementById("tonnage").value);
+  const p=parseFloat(document.getElementById("price").value);
+  const loc=document.getElementById("transport").value;
+  if(!codeInput){toast("Please select a waste code","info");return;}
+  if(!selectedTreatment){toast("Please select a treatment method","info");return;}
+  if(!t||!p||!loc){toast("Please fill all fields","info");return;}
+  currentResult=calculateResult(t,p,selectedTreatment,loc);
+  if(!currentResult) return;
   renderResult();
   renderBreakeven();
   showResultBtns();
 }
 
-function clearResult() { currentResult = null; hideResultBtns(); document.getElementById("result-box").style.display="none"; }
+function clearResult() { currentResult=null; hideResultBtns(); document.getElementById("result-box").style.display="none"; }
 function showResultBtns() { ["btn-add-quote","btn-add-compare","btn-save-history"].forEach(id=>document.getElementById(id).style.display=""); }
 function hideResultBtns() { ["btn-add-quote","btn-add-compare","btn-save-history"].forEach(id=>document.getElementById(id).style.display="none"); }
 
 function renderResult() {
-  const r = currentResult;
-  const good = r.margin > 25;
-  const actualProfit = r.revenueBeforeMin - r.totalCost;
-  const actualMargin = (actualProfit/r.revenueBeforeMin)*100;
-  const isLoss = actualProfit < 0;
-  const isProfitable = actualMargin > 25;
-  const client = document.getElementById("client").value;
-  const loc = document.getElementById("transport").value;
-  const tonnage = document.getElementById("tonnage").value;
+  const r=currentResult;
+  const MT=marginThreshold;
+  const good=r.margin>MT;
+  const actualProfit=r.revenueBeforeMin-r.totalCost;
+  const actualMargin=(actualProfit/r.revenueBeforeMin)*100;
+  const isLoss=actualProfit<0;
+  const isProfitable=actualMargin>MT;
+  const client=document.getElementById("client").value;
+  const loc=document.getElementById("transport").value;
+  const tonnage=document.getElementById("tonnage").value;
+  const base=basePrices[selectedTreatment]||0;
+  const priceInput=parseFloat(document.getElementById("price").value);
+  const belowBase=base>0&&priceInput<base;
 
-  let html = `<div class="result-box ${good?"good":"neutral"}">
+  let html=`<div class="result-box ${good?"good":"neutral"}">
     <div class="verdict ${good?"good":"neutral"}">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">${good?'<path d="M3 8l3.5 3.5L13 5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>':'<path d="M4 8h8" stroke="#fff" stroke-width="2" stroke-linecap="round"/>'}</svg>
-      ${good?"Profitable — Margin above 25% threshold":"Margin below 25% threshold"}${client?` — ${client}`:""}
+      ${good?`Profitable — Margin above ${MT}% threshold`:`Margin below ${MT}% threshold`}${client?` — ${client}`:""}
     </div>
-
-    <!-- Tanpa Min Invoice -->
+    ${belowBase?`<div class="base-warn">⚠ Price per tonne (${fmt(priceInput)}) is below base price for ${selectedTreatment} (${fmt(base)}). Consider increasing your price.</div>`:""}
     <div class="sub-box" style="background:${isLoss?"#fef2f2":isProfitable?"#f0fdf4":"#fffbeb"};border:1px solid ${isLoss?"#fecaca":isProfitable?"#bbf7d0":"#fde68a"}">
       <div style="font-size:12px;font-weight:500;color:${isLoss?"#dc2626":isProfitable?"#073d1e":"#b45309"};margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">
-        Tanpa Minimum Invoice ${isLoss?"(RUGI)":isProfitable?"(Profitable)":"(Below 25%)"}
+        Tanpa Minimum Invoice ${isLoss?"(RUGI)":isProfitable?"(Profitable)":"(Below "+MT+"%)"}
       </div>
       <div class="metric-row">
         ${[["Revenue Sebenar",fmt(r.revenueBeforeMin),!isLoss&&isProfitable],["Total Cost",fmt(r.totalCost),false],["Profit/Loss",fmt(actualProfit),!isLoss&&isProfitable],["Margin %",actualMargin.toFixed(1)+"%",!isLoss&&isProfitable]].map(([l,v,g])=>`
@@ -427,148 +413,127 @@ function renderResult() {
         </div>`).join("")}
       </div>
     </div>
-
-    <!-- Dengan Min Invoice -->
     <div class="sub-box breakdown">
       <div style="font-size:12px;font-weight:500;color:#073d1e;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">
         Dengan Minimum Invoice (${fmt(minInvoice[loc])})
       </div>
       <div class="metric-row">
-        ${[["Total Revenue",fmt(r.revenue),r.margin>25],["Total Cost",fmt(r.totalCost),false],["Profit",fmt(r.profit),r.margin>25],["Margin %",r.margin.toFixed(1)+"%",r.margin>25]].map(([l,v,g])=>`
+        ${[["Total Revenue",fmt(r.revenue),r.margin>MT],["Total Cost",fmt(r.totalCost),false],["Profit",fmt(r.profit),r.margin>MT],["Margin %",r.margin.toFixed(1)+"%",r.margin>MT]].map(([l,v,g])=>`
         <div class="metric ${g?"good":""}"><div class="val">${v}</div><div class="lbl">${l}</div></div>`).join("")}
       </div>
     </div>
-
     ${r.minInvoiceApplied?`<div class="info-box yellow"><strong>Minimum Invoice Applied:</strong> Original revenue ${fmt(r.revenueBeforeMin)} below minimum ${fmt(minInvoice[loc])} for ${loc}, charged ${fmt(r.revenue)} instead.</div>`:""}
-
-    <!-- Cost Breakdown -->
     <div class="info-box breakdown" style="margin-bottom:16px">
       <div style="font-size:12px;font-weight:500;color:#073d1e;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Cost Breakdown</div>
       <div class="grid2">
-        <div style="font-size:13px"><span style="color:#666">Treatment Cost:</span><div style="font-weight:500">${fmt(r.treatmentCost)} <span style="font-size:11px;color:#888">(${tonnage}t x RM ${treatmentCosts[selectedTreatment]}/t)</span></div></div>
-        <div style="font-size:13px"><span style="color:#666">Transport Cost:</span><div style="font-weight:500">${fmt(r.transportCost)} <span style="font-size:11px;color:#888">(${r.trips} trip${r.trips>1?"s":""} x ${fmt(TRANSPORT.find(([l])=>l===loc)?.[1]||0)})</span></div></div>
+        <div style="font-size:13px"><span style="color:#666">Treatment Cost:</span><div style="font-weight:500">${fmt(r.treatmentCost)} <span style="font-size:11px;color:#888">(${tonnage}t × RM ${treatmentCosts[selectedTreatment]}/t)</span></div></div>
+        <div style="font-size:13px"><span style="color:#666">Transport Cost:</span><div style="font-weight:500">${fmt(r.transportCost)} <span style="font-size:11px;color:#888">(${r.trips} trip${r.trips>1?"s":""} × ${fmt(TRANSPORT.find(([l])=>l===loc)?.[1]||0)})</span></div></div>
       </div>
     </div>
-
     <div class="info-box blue">
       <strong>Transport:</strong> ${tonnage} tonnes / ${LORRY_CAPACITY} tonne capacity = <strong>${r.trips} trip${r.trips>1?"s":""}</strong>
       ${parseFloat(tonnage)%LORRY_CAPACITY!==0&&parseFloat(tonnage)<LORRY_CAPACITY?'<span style="margin-left:8px;color:#b8600a">(partial load)</span>':""}
     </div>
-
     <div style="font-size:12px;color:#666;border-top:.5px solid #d4e8da;padding-top:12px;margin-top:4px">
       Treatment: <b style="color:#073d1e">${selectedTreatment}</b> @ RM ${treatmentCosts[selectedTreatment]}/t &nbsp;·&nbsp;
       Waste: <b style="color:#073d1e">${codeInput}</b> &nbsp;·&nbsp;
       Transport: <b style="color:#073d1e">${loc}</b>
+      ${base?` &nbsp;·&nbsp; Base Price: <b style="color:#073d1e">${fmt(base)}/t</b>`:""}
     </div>
   </div>`;
 
-  const rb = document.getElementById("result-box");
-  rb.innerHTML = html;
-  rb.style.display = "";
+  const rb=document.getElementById("result-box");
+  rb.innerHTML=html; rb.style.display="";
 }
 
 function renderBreakeven() {
-  const tonnage = parseFloat(document.getElementById("tonnage").value);
-  const loc = document.getElementById("transport").value;
-  if (!tonnage||!selectedTreatment||!loc) { document.getElementById("breakeven-card").style.display="none"; return; }
-  const tc = treatmentCosts[selectedTreatment];
-  const tr = TRANSPORT.find(([l])=>l===loc);
-  if (!tc||!tr) return;
-  const trips = Math.ceil(tonnage/LORRY_CAPACITY);
-  const totalCost = tc*tonnage + trips*tr[1];
-  const minInv = minInvoice[loc];
-  const suggestions = [25,30,35].map(m => {
-    const req = totalCost/(1-m/100);
-    const rev = Math.max(req,minInv);
-    return {margin:m, price:rev/tonnage};
+  const tonnage=parseFloat(document.getElementById("tonnage").value);
+  const loc=document.getElementById("transport").value;
+  if(!tonnage||!selectedTreatment||!loc){document.getElementById("breakeven-card").style.display="none";return;}
+  const tc=treatmentCosts[selectedTreatment];
+  const tr=TRANSPORT.find(([l])=>l===loc);
+  if(!tc||!tr) return;
+  const trips=Math.ceil(tonnage/LORRY_CAPACITY);
+  const totalCost=tc*tonnage+trips*tr[1];
+  const minInv=minInvoice[loc];
+  const MT=marginThreshold;
+  const base=basePrices[selectedTreatment]||0;
+
+  // Show 3 margin levels around threshold: MT, MT+5, MT+10
+  const suggestions=[MT, MT+5, MT+10].map(m=>{
+    const req=totalCost/(1-m/100);
+    const rev=Math.max(req,minInv);
+    const pricePerTonne=rev/tonnage;
+    const belowBase=base>0&&pricePerTonne<base;
+    return {margin:m, price:pricePerTonne, belowBase};
   });
+
   document.getElementById("breakeven-card").style.display="";
-  document.getElementById("breakeven-grid").innerHTML = suggestions.map(({margin,price:sp})=>`
-    <div class="bk-card ${margin===25?"highlight":""}">
+  document.getElementById("breakeven-grid").innerHTML=suggestions.map(({margin,price:sp,belowBase})=>`
+    <div class="bk-card ${margin===MT?"highlight":""}">
       <div style="font-size:12px;color:#666;margin-bottom:4px">For ${margin}% Margin</div>
-      <div style="font-size:18px;font-weight:600;color:${margin===25?"#0a5c2e":"#333"}">${fmt(sp)}</div>
-      <div style="font-size:11px;color:#888;margin-bottom:8px">per tonne</div>
+      <div style="font-size:18px;font-weight:600;color:${margin===MT?"#0a5c2e":"#333"}">${fmt(sp)}</div>
+      <div style="font-size:11px;color:#888;margin-bottom:4px">per tonne</div>
+      ${belowBase?`<div style="font-size:10px;color:#b45309;margin-bottom:6px">⚠ Below base (${fmt(base)})</div>`:`<div style="font-size:10px;color:#0a5c2e;margin-bottom:6px">✓ Above base price</div>`}
       <button class="btn-sm" style="font-size:11px;padding:6px 12px" onclick="usePrice(${sp.toFixed(2)})">Use This Price</button>
     </div>`).join("");
+
+  // Show warning if ALL suggestions are below base
+  const warnEl=document.getElementById("base-price-warn");
+  if(base>0&&suggestions.every(s=>s.belowBase)){
+    warnEl.textContent=`⚠ All suggested prices are below the base price for ${selectedTreatment} (${fmt(base)}/t). You may need to negotiate higher or review the tonnage.`;
+    warnEl.style.display="";
+  } else { warnEl.style.display="none"; }
 }
 
-function usePrice(p) {
-  document.getElementById("price").value = p;
-  clearResult();
-}
+function usePrice(p) { document.getElementById("price").value=p; clearResult(); }
 
 // ── REFERENCE ─────────────────────────────────────────────────────────────
 function buildRef() {
-  const colors = {
-    "Pyrolysis":["#fff3e0","#b8600a","#f5c88a"],
-    "Solidification":["#e8f0ff","#1a3a8b","#b3c8f5"],
-    "Secured Landfill":["#e8f5ee","#0a5c2e","#9fd4b0"]
-  };
-  let html = "";
-  Object.entries(COMPAT).forEach(([t,groups]) => {
-    const [bg,fg,bd] = colors[t];
-    html += `<div class="card" style="margin-bottom:20px">
+  const colors={"Pyrolysis":["#fff3e0","#b8600a","#f5c88a"],"Solidification":["#e8f0ff","#1a3a8b","#b3c8f5"],"Secured Landfill":["#e8f5ee","#0a5c2e","#9fd4b0"]};
+  let html="";
+  Object.entries(COMPAT).forEach(([t,groups])=>{
+    const [bg,fg,bd]=colors[t];
+    html+=`<div class="card" style="margin-bottom:20px">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
         <span style="background:${bg};color:${fg};border:1px solid ${bd};border-radius:6px;padding:6px 16px;font-size:15px;font-weight:600">${t}</span>
         <span style="font-size:14px;color:#666">RM ${treatmentCosts[t].toLocaleString()}/tonne</span>
+        <span style="font-size:13px;color:#888">Base: RM ${(basePrices[t]||0).toLocaleString()}/t</span>
       </div>`;
-    Object.entries(groups).forEach(([grp,codes]) => {
-      html += `<div style="margin-bottom:16px">
+    Object.entries(groups).forEach(([grp,codes])=>{
+      html+=`<div style="margin-bottom:16px">
         <div class="group-badge">${grp}</div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
           ${codes.map(c=>`<span class="sw-chip ${codeInput===c?"active":""}" onclick="selectCodeFromRef('${c}')">${c}</span>`).join("")}
         </div>
       </div>`;
     });
-    html += `</div>`;
+    html+=`</div>`;
   });
-  document.getElementById("ref-section").innerHTML = html;
+  document.getElementById("ref-section").innerHTML=html;
 }
-
-function selectCodeFromRef(c) {
-  selectCode(c);
-  document.getElementById("codeSearch").value = c;
-  window.scrollTo({top:0,behavior:"smooth"});
-}
+function selectCodeFromRef(c) { selectCode(c); document.getElementById("codeSearch").value=c; window.scrollTo({top:0,behavior:"smooth"}); }
 
 // ── QUOTE ─────────────────────────────────────────────────────────────────
 function addToQuote() {
-  if (!currentResult) return;
-  quoteItems.push({
-    id: Date.now().toString(),
-    client: document.getElementById("client").value,
-    codeInput, treatment: selectedTreatment,
-    tonnage: document.getElementById("tonnage").value,
-    price: document.getElementById("price").value,
-    transport: document.getElementById("transport").value,
-    result: {...currentResult}
-  });
+  if(!currentResult) return;
+  quoteItems.push({id:Date.now().toString(),client:document.getElementById("client").value,codeInput,treatment:selectedTreatment,tonnage:document.getElementById("tonnage").value,price:document.getElementById("price").value,transport:document.getElementById("transport").value,result:{...currentResult}});
   toast(`Added ${codeInput} to Quote (${quoteItems.length} items)`);
 }
-
 function renderQuote() {
-  const list = document.getElementById("quote-list");
-  const actions = document.getElementById("quote-actions");
-  const totals = document.getElementById("quote-totals");
-  if (!quoteItems.length) {
-    list.innerHTML = `<div style="text-align:center;padding:40px 20px;color:#888"><div style="font-size:14px;margin-bottom:8px">No items in quote yet</div><div style="font-size:12px">Calculate margin and click "Add to Quote"</div></div>`;
-    actions.style.display="none"; totals.style.display="none"; return;
-  }
-  actions.style.display="flex"; totals.style.display="";
-  list.innerHTML = quoteItems.map(item => {
-    const r = item.result;
-    const isLoss = r.profit<0, isProfit = r.margin>25;
-    const cls = isLoss?"loss":isProfit?"profit":"warn";
-    const pillBg = isLoss?"#dc2626":isProfit?"#0a5c2e":"#b45309";
-    const pillTxt = isLoss?"RUGI":isProfit?"Profitable":"Below 25%";
+  const list=document.getElementById("quote-list"),actions=document.getElementById("quote-actions"),totals=document.getElementById("quote-totals");
+  const MT=marginThreshold;
+  if(!quoteItems.length){list.innerHTML=`<div style="text-align:center;padding:40px 20px;color:#888"><div style="font-size:14px;margin-bottom:8px">No items in quote yet</div><div style="font-size:12px">Calculate margin and click "Add to Quote"</div></div>`;actions.style.display="none";totals.style.display="none";return;}
+  actions.style.display="flex";totals.style.display="";
+  list.innerHTML=quoteItems.map(item=>{
+    const r=item.result,isLoss=r.profit<0,isProfit=r.margin>MT;
+    const cls=isLoss?"loss":isProfit?"profit":"warn";
+    const pillBg=isLoss?"#dc2626":isProfit?"#0a5c2e":"#b45309";
+    const pillTxt=isLoss?"RUGI":isProfit?"Profitable":`Below ${MT}%`;
     return `<div class="quote-card ${cls}">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
-        <div>
-          ${item.client?`<div style="font-size:15px;font-weight:600;margin-bottom:4px">${item.client}</div>`:""}
-          <div style="display:flex;align-items:center;gap:8px">
-            <span style="font-family:monospace;font-size:14px;background:#f4f4f4;padding:3px 10px;border-radius:4px">${item.codeInput}</span>
-            <span style="font-size:13px;color:#666">${item.treatment}</span>
-          </div>
+        <div>${item.client?`<div style="font-size:15px;font-weight:600;margin-bottom:4px">${item.client}</div>`:""}
+          <div style="display:flex;align-items:center;gap:8px"><span style="font-family:monospace;font-size:14px;background:#f4f4f4;padding:3px 10px;border-radius:4px">${item.codeInput}</span><span style="font-size:13px;color:#666">${item.treatment}</span></div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
           <span class="status-pill" style="background:${pillBg}">${pillTxt}</span>
@@ -576,176 +541,178 @@ function renderQuote() {
         </div>
       </div>
       <div style="font-size:13px;color:#666;margin-bottom:12px">${item.tonnage} MT @ ${fmt(parseFloat(item.price))}/t | ${item.transport}</div>
-      <div class="grid4">
-        ${[["Revenue",fmt(r.revenue),""],["Cost",fmt(r.totalCost),""],["Profit",fmt(r.profit),isLoss?"#dc2626":isProfit?"#0a5c2e":"#b45309"],["Margin",r.margin.toFixed(1)+"%",isLoss?"#dc2626":isProfit?"#0a5c2e":"#b45309"]].map(([l,v,c])=>`
+      <div class="grid4">${[["Revenue",fmt(r.revenue),""],["Cost",fmt(r.totalCost),""],["Profit",fmt(r.profit),isLoss?"#dc2626":isProfit?"#0a5c2e":"#b45309"],["Margin",r.margin.toFixed(1)+"%",isLoss?"#dc2626":isProfit?"#0a5c2e":"#b45309"]].map(([l,v,c])=>`
         <div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;text-align:center">
           <div style="font-size:11px;color:#888;margin-bottom:2px">${l}</div>
           <div style="font-size:15px;font-weight:600;${c?`color:${c}`:""}">${v}</div>
-        </div>`).join("")}
-      </div>
+        </div>`).join("")}</div>
     </div>`;
   }).join("");
-  const totRev = quoteItems.reduce((s,i)=>s+(i.result?.revenue||0),0);
-  const totCost = quoteItems.reduce((s,i)=>s+(i.result?.totalCost||0),0);
-  const totProfit = quoteItems.reduce((s,i)=>s+(i.result?.profit||0),0);
-  document.getElementById("qt-rev").textContent = fmt(totRev);
-  document.getElementById("qt-cost").textContent = fmt(totCost);
-  document.getElementById("qt-profit").textContent = fmt(totProfit);
+  document.getElementById("qt-rev").textContent=fmt(quoteItems.reduce((s,i)=>s+(i.result?.revenue||0),0));
+  document.getElementById("qt-cost").textContent=fmt(quoteItems.reduce((s,i)=>s+(i.result?.totalCost||0),0));
+  document.getElementById("qt-profit").textContent=fmt(quoteItems.reduce((s,i)=>s+(i.result?.profit||0),0));
 }
-
-function removeQuote(id) { quoteItems = quoteItems.filter(i=>i.id!==id); renderQuote(); }
-function clearQuote() { quoteItems=[]; renderQuote(); }
-
-function copyQuote() {
-  const client = quoteItems[0]?.client||"Client";
-  const lines = [`ER2E QUOTATION - ${client}`,`Date: ${new Date().toLocaleDateString("en-MY")}`,`-----------------------------------`,
-    ...quoteItems.map((item,i)=>[`Item ${i+1}: ${item.codeInput} - ${item.treatment}`,`Tonnage: ${item.tonnage} MT @ ${fmt(parseFloat(item.price))}/t`,`Location: ${item.transport}`,`Revenue: ${fmt(item.result?.revenue||0)}`,`---`].join("\n")),
-    `-----------------------------------`,
-    `TOTAL REVENUE: ${fmt(quoteItems.reduce((s,i)=>s+(i.result?.revenue||0),0))}`,
-    `TOTAL COST: ${fmt(quoteItems.reduce((s,i)=>s+(i.result?.totalCost||0),0))}`,
-    `TOTAL PROFIT: ${fmt(quoteItems.reduce((s,i)=>s+(i.result?.profit||0),0))}`
-  ];
+function removeQuote(id){quoteItems=quoteItems.filter(i=>i.id!==id);renderQuote();}
+function clearQuote(){quoteItems=[];renderQuote();}
+function copyQuote(){
+  const lines=[`ER2E QUOTATION - ${quoteItems[0]?.client||"Client"}`,`Date: ${new Date().toLocaleDateString("en-MY")}`,`-----------------------------------`,...quoteItems.map((item,i)=>[`Item ${i+1}: ${item.codeInput} - ${item.treatment}`,`Tonnage: ${item.tonnage} MT @ ${fmt(parseFloat(item.price))}/t`,`Location: ${item.transport}`,`Revenue: ${fmt(item.result?.revenue||0)}`,`---`].join("\n")),`-----------------------------------`,`TOTAL REVENUE: ${fmt(quoteItems.reduce((s,i)=>s+(i.result?.revenue||0),0))}`,`TOTAL COST: ${fmt(quoteItems.reduce((s,i)=>s+(i.result?.totalCost||0),0))}`,`TOTAL PROFIT: ${fmt(quoteItems.reduce((s,i)=>s+(i.result?.profit||0),0))}`];
   navigator.clipboard.writeText(lines.join("\n")).then(()=>toast("Quotation copied!"));
 }
 
 // ── COMPARE ───────────────────────────────────────────────────────────────
-function addToCompare() {
-  if (!currentResult) return;
-  if (compareItems.length>=3) { toast("Maximum 3 scenarios","info"); return; }
-  compareItems.push({
-    id: Date.now().toString(),
-    client: document.getElementById("client").value,
-    codeInput, treatment: selectedTreatment,
-    tonnage: document.getElementById("tonnage").value,
-    price: document.getElementById("price").value,
-    transport: document.getElementById("transport").value,
-    result: {...currentResult}
-  });
+function addToCompare(){
+  if(!currentResult) return;
+  if(compareItems.length>=3){toast("Maximum 3 scenarios","info");return;}
+  compareItems.push({id:Date.now().toString(),client:document.getElementById("client").value,codeInput,treatment:selectedTreatment,tonnage:document.getElementById("tonnage").value,price:document.getElementById("price").value,transport:document.getElementById("transport").value,result:{...currentResult}});
   toast(`Added ${codeInput} to Compare (${compareItems.length}/3)`);
 }
-
-function renderCompare() {
-  const grid = document.getElementById("compare-grid");
-  const empty = document.getElementById("compare-empty");
-  if (!compareItems.length) { grid.style.display="none"; empty.style.display=""; return; }
-  empty.style.display="none";
-  grid.style.display="grid";
-  grid.style.gridTemplateColumns = `repeat(${compareItems.length},1fr)`;
-  grid.innerHTML = compareItems.map(item => {
-    const r = item.result;
-    const isLoss=r.profit<0, isProfit=r.margin>25;
-    const bg = isProfit?"#e8f5ee":isLoss?"#fef2f2":"#f8f8f8";
-    const bd = isProfit?"#9fd4b0":isLoss?"#fecaca":"#e8e8e8";
-    return `<div class="compare-col" style="background:${bg};border:1px solid ${bd}">
+function renderCompare(){
+  const grid=document.getElementById("compare-grid"),empty=document.getElementById("compare-empty"),MT=marginThreshold;
+  if(!compareItems.length){grid.style.display="none";empty.style.display="";return;}
+  empty.style.display="none";grid.style.display="grid";grid.style.gridTemplateColumns=`repeat(${compareItems.length},1fr)`;
+  grid.innerHTML=compareItems.map(item=>{
+    const r=item.result,isLoss=r.profit<0,isProfit=r.margin>MT;
+    return `<div class="compare-col" style="background:${isProfit?"#e8f5ee":isLoss?"#fef2f2":"#f8f8f8"};border:1px solid ${isProfit?"#9fd4b0":isLoss?"#fecaca":"#e8e8e8"}">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
         <span style="font-family:monospace;font-weight:500">${item.codeInput}</span>
-        <button style="background:none;border:none;cursor:pointer;color:#888;font-size:18px;line-height:1" onclick="removeCompare('${item.id}')">×</button>
+        <button style="background:none;border:none;cursor:pointer;color:#888;font-size:18px" onclick="removeCompare('${item.id}')">×</button>
       </div>
       <div style="font-size:12px;color:#666;margin-bottom:8px">${item.treatment}</div>
       <div style="font-size:12px;margin-bottom:4px">${item.tonnage} MT @ ${fmt(parseFloat(item.price))}/t</div>
       <div style="font-size:12px;margin-bottom:12px">${item.transport}</div>
       <div style="border-top:1px solid #ddd;padding-top:12px">
-        ${[["Revenue",fmt(r.revenue),""],["Cost",fmt(r.totalCost),""],["Profit",fmt(r.profit),isLoss?"#dc2626":"#0a5c2e"]].map(([l,v,c])=>`
-        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
-          <span>${l}:</span><span style="font-weight:500;${c?`color:${c}`:""}">${v}</span>
-        </div>`).join("")}
-        <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:600;margin-top:8px">
-          <span>Margin:</span>
-          <span style="color:${isProfit?"#0a5c2e":isLoss?"#dc2626":"#b45309"}">${r.margin.toFixed(1)}%</span>
-        </div>
+        ${[["Revenue",fmt(r.revenue),""],["Cost",fmt(r.totalCost),""],["Profit",fmt(r.profit),isLoss?"#dc2626":"#0a5c2e"]].map(([l,v,c])=>`<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>${l}:</span><span style="font-weight:500;${c?`color:${c}`:""}">${v}</span></div>`).join("")}
+        <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:600;margin-top:8px"><span>Margin:</span><span style="color:${isProfit?"#0a5c2e":isLoss?"#dc2626":"#b45309"}">${r.margin.toFixed(1)}%</span></div>
       </div>
     </div>`;
   }).join("");
 }
-
-function removeCompare(id) { compareItems=compareItems.filter(i=>i.id!==id); renderCompare(); }
-function clearCompare() { compareItems=[]; renderCompare(); }
+function removeCompare(id){compareItems=compareItems.filter(i=>i.id!==id);renderCompare();}
+function clearCompare(){compareItems=[];renderCompare();}
 
 // ── HISTORY ───────────────────────────────────────────────────────────────
-function saveToHistory() {
-  if (!currentResult) return;
-  const item = {
-    id: Date.now().toString(),
-    date: new Date().toLocaleString("en-MY"),
-    client: document.getElementById("client").value,
-    codeInput, treatment: selectedTreatment,
-    tonnage: document.getElementById("tonnage").value,
-    price: document.getElementById("price").value,
-    transport: document.getElementById("transport").value,
-    result: {...currentResult}
-  };
-  history = [item,...history].slice(0,50);
+function saveToHistory(){
+  if(!currentResult) return;
+  const item={id:Date.now().toString(),date:new Date().toLocaleString("en-MY"),client:document.getElementById("client").value,codeInput,treatment:selectedTreatment,tonnage:document.getElementById("tonnage").value,price:document.getElementById("price").value,transport:document.getElementById("transport").value,result:{...currentResult}};
+  history=[item,...history].slice(0,50);
   localStorage.setItem("er2e_history",JSON.stringify(history));
   toast("Saved to History");
 }
-
-function renderHistory() {
-  const el = document.getElementById("history-content");
-  if (!history.length) {
-    el.innerHTML=`<div style="text-align:center;padding:40px 20px;color:#888"><div style="font-size:14px;margin-bottom:8px">No history yet</div><div style="font-size:12px">Click "Save to History" after calculating</div></div>`;
-    return;
-  }
-  el.innerHTML = `<table><thead><tr>
-    <th style="border-radius:8px 0 0 0">Date</th><th>Client</th><th>Waste</th><th>Treatment</th><th>Tonnage</th><th>Revenue</th><th>Profit</th><th style="border-radius:0 8px 0 0">Margin</th>
-  </tr></thead><tbody>${history.map((item,i)=>`
+function renderHistory(){
+  const el=document.getElementById("history-content"),MT=marginThreshold;
+  if(!history.length){el.innerHTML=`<div style="text-align:center;padding:40px 20px;color:#888"><div style="font-size:14px;margin-bottom:8px">No history yet</div></div>`;return;}
+  el.innerHTML=`<table><thead><tr><th style="border-radius:8px 0 0 0">Date</th><th>Client</th><th>Waste</th><th>Treatment</th><th>Tonnage</th><th>Revenue</th><th>Profit</th><th style="border-radius:0 8px 0 0">Margin</th></tr></thead><tbody>${history.map((item,i)=>`
     <tr style="background:${i%2===0?"#fff":"#fafcfa"}">
-      <td style="font-size:11px">${item.date}</td>
-      <td>${item.client||"-"}</td>
-      <td style="font-family:monospace">${item.codeInput}</td>
-      <td>${item.treatment}</td>
-      <td>${item.tonnage} MT</td>
-      <td>${fmt(item.result.revenue)}</td>
+      <td style="font-size:11px">${item.date}</td><td>${item.client||"-"}</td>
+      <td style="font-family:monospace">${item.codeInput}</td><td>${item.treatment}</td>
+      <td>${item.tonnage} MT</td><td>${fmt(item.result.revenue)}</td>
       <td style="color:${item.result.profit>=0?"#0a5c2e":"#c0392b"}">${fmt(item.result.profit)}</td>
-      <td style="font-weight:500;color:${item.result.margin>25?"#0a5c2e":item.result.margin<0?"#c0392b":"#b45309"}">${item.result.margin.toFixed(1)}%</td>
+      <td style="font-weight:500;color:${item.result.margin>MT?"#0a5c2e":item.result.margin<0?"#c0392b":"#b45309"}">${item.result.margin.toFixed(1)}%</td>
     </tr>`).join("")}</tbody></table>`;
 }
-
-function clearHistory() { history=[]; localStorage.removeItem("er2e_history"); renderHistory(); toast("History cleared"); }
+function clearHistory(){history=[];localStorage.removeItem("er2e_history");renderHistory();toast("History cleared");}
 
 // ── SETTINGS ──────────────────────────────────────────────────────────────
-function renderSettings() {
-  // Min invoice table
-  const tbody = document.getElementById("min-invoice-tbody");
-  tbody.innerHTML = TRANSPORT.map(([loc],i)=>`
+function renderSettings(){
+  // Min invoice
+  document.getElementById("min-invoice-tbody").innerHTML=TRANSPORT.map(([loc],i)=>`
     <tr style="background:${i%2===0?"#fff":"#fafcfa"}">
       <td>${loc}</td>
       <td id="cell-${loc.replace(/[^a-z0-9]/gi,"_")}">
         <span class="edit-span" onclick="editMinInvoice('${loc}')">${fmt(minInvoice[loc])}</span>
       </td>
     </tr>`).join("");
-  // Treatment cost cards
-  const tcc = document.getElementById("treatment-cost-cards");
-  tcc.innerHTML = Object.entries(treatmentCosts).map(([t,c])=>`
-    <div style="background:#f8f8f8;border-radius:8px;padding:12px">
+
+  // Treatment costs — editable
+  document.getElementById("treatment-cost-cards").innerHTML=Object.entries(treatmentCosts).map(([t,c])=>{
+    const key="tc_"+t.replace(/[^a-z0-9]/gi,"_");
+    return `<div style="background:#f8f8f8;border-radius:8px;padding:12px" id="tcard-${key}">
       <div style="font-size:12px;color:#666;margin-bottom:4px">${t}</div>
-      <div style="font-size:16px;font-weight:500">${fmt(c)}/t</div>
-    </div>`).join("");
+      <div style="font-size:16px;font-weight:500;margin-bottom:8px">${fmt(c)}/t</div>
+      <button class="btn-sm" style="font-size:11px;padding:5px 10px" onclick="editTreatmentCost('${t}','${key}')">Edit</button>
+    </div>`;
+  }).join("");
+
+  // Base prices — editable
+  document.getElementById("base-price-cards").innerHTML=Object.entries(basePrices).map(([t,c])=>{
+    const key="bp_"+t.replace(/[^a-z0-9]/gi,"_");
+    return `<div style="background:#f8f8f8;border-radius:8px;padding:12px" id="bcard-${key}">
+      <div style="font-size:12px;color:#666;margin-bottom:4px">${t}</div>
+      <div style="font-size:16px;font-weight:500;margin-bottom:8px">${fmt(c)}/t</div>
+      <button class="btn-sm" style="font-size:11px;padding:5px 10px" onclick="editBasePrice('${t}','${key}')">Edit</button>
+    </div>`;
+  }).join("");
+
+  // Margin threshold
+  document.getElementById("margin-threshold-input").value=marginThreshold;
+  document.getElementById("current-threshold-display").textContent=marginThreshold+"%";
 }
 
-function editMinInvoice(loc) {
-  const key = loc.replace(/[^a-z0-9]/gi,"_");
-  const cell = document.getElementById("cell-"+key);
-  cell.innerHTML = `<div style="display:flex;gap:8px;align-items:center">
+function editMinInvoice(loc){
+  const key=loc.replace(/[^a-z0-9]/gi,"_");
+  document.getElementById("cell-"+key).innerHTML=`<div style="display:flex;gap:8px;align-items:center">
     <input type="number" id="edit-input-${key}" value="${minInvoice[loc]}" style="width:120px;padding:6px 10px">
     <button class="btn-sm" onclick="saveMinInvoice('${loc}','${key}')">Save</button>
     <button class="btn-outline" onclick="renderSettings()">Cancel</button>
   </div>`;
   document.getElementById("edit-input-"+key).focus();
 }
-
-function saveMinInvoice(loc, key) {
-  const val = parseFloat(document.getElementById("edit-input-"+key).value);
-  if (!isNaN(val)&&val>=0) { minInvoice[loc]=val; localStorage.setItem("er2e_min_invoice",JSON.stringify(minInvoice)); }
-  renderSettings();
-  toast(`Saved: ${loc}`);
+function saveMinInvoice(loc,key){
+  const val=parseFloat(document.getElementById("edit-input-"+key).value);
+  if(!isNaN(val)&&val>=0){minInvoice[loc]=val;localStorage.setItem("er2e_min_invoice",JSON.stringify(minInvoice));}
+  renderSettings();toast(`Saved: ${loc}`);
 }
 
-function resetSettings() {
+function editTreatmentCost(t,key){
+  document.getElementById("tcard-"+key).innerHTML=`<div style="font-size:12px;color:#666;margin-bottom:6px">${t}</div>
+    <input type="number" id="tcedit-${key}" value="${treatmentCosts[t]}" style="margin-bottom:8px;padding:6px 10px">
+    <div style="display:flex;gap:6px">
+      <button class="btn-sm" style="font-size:11px" onclick="saveTreatmentCost('${t}','${key}')">Save</button>
+      <button class="btn-outline" style="font-size:11px;padding:5px 10px" onclick="renderSettings()">Cancel</button>
+    </div>`;
+  document.getElementById("tcedit-"+key).focus();
+}
+function saveTreatmentCost(t,key){
+  const val=parseFloat(document.getElementById("tcedit-"+key).value);
+  if(!isNaN(val)&&val>=0){treatmentCosts[t]=val;localStorage.setItem("er2e_treatment_costs",JSON.stringify(treatmentCosts));}
+  buildRef();renderSettings();toast(`Saved: ${t}`);
+}
+
+function editBasePrice(t,key){
+  document.getElementById("bcard-"+key).innerHTML=`<div style="font-size:12px;color:#666;margin-bottom:6px">${t}</div>
+    <input type="number" id="bpedit-${key}" value="${basePrices[t]}" style="margin-bottom:8px;padding:6px 10px">
+    <div style="display:flex;gap:6px">
+      <button class="btn-sm" style="font-size:11px" onclick="saveBasePrice('${t}','${key}')">Save</button>
+      <button class="btn-outline" style="font-size:11px;padding:5px 10px" onclick="renderSettings()">Cancel</button>
+    </div>`;
+  document.getElementById("bpedit-"+key).focus();
+}
+function saveBasePrice(t,key){
+  const val=parseFloat(document.getElementById("bpedit-"+key).value);
+  if(!isNaN(val)&&val>=0){basePrices[t]=val;localStorage.setItem("er2e_base_price",JSON.stringify(basePrices));}
+  renderSettings();toast(`Saved: ${t} base price`);
+}
+
+function saveMarginThreshold(){
+  const val=parseFloat(document.getElementById("margin-threshold-input").value);
+  if(!isNaN(val)&&val>0&&val<100){
+    marginThreshold=val;
+    localStorage.setItem("er2e_margin_threshold",val.toString());
+    document.getElementById("current-threshold-display").textContent=val+"%";
+    toast(`Margin threshold set to ${val}%`);
+  } else toast("Enter a valid % between 1-99","info");
+}
+
+function resetSettings(){
   minInvoice={...DEFAULT_MIN_INVOICE};
   treatmentCosts={...DEFAULT_TREATMENT_COSTS};
+  basePrices={...DEFAULT_BASE_PRICE};
+  marginThreshold=DEFAULT_MARGIN_THRESHOLD;
   localStorage.removeItem("er2e_min_invoice");
-  renderSettings();
-  toast("Reset to defaults");
+  localStorage.removeItem("er2e_treatment_costs");
+  localStorage.removeItem("er2e_base_price");
+  localStorage.removeItem("er2e_margin_threshold");
+  buildRef();renderSettings();toast("Reset to defaults");
 }
 
 init();
